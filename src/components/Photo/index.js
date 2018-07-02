@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./Photo.css";
-import firebase from 'firebase';
-
+import { getData, submitScore } from "../../utils/firebase";
 
 class Photo extends Component {
   constructor(props) {
@@ -13,17 +12,25 @@ class Photo extends Component {
   }
 
   componentWillMount() {
-    // this.setState({ like: 11, dislike: 22 });
+    getData(this.props.imageData.id, value => {
+      this.setState(value);
+    });
   }
 
-
   dislikeClick() {
-    this.setState({ dislike: this.state.dislike + 1 });
+    const like = this.state.like;
+    const dislike = this.state.dislike + 1;
+
+    this.setState({ like: like, dislike: dislike });
+    submitScore(this.props.imageData.id, like, dislike);
   }
 
   likeClick() {
-    //fetch to database, increment likes count
-    this.setState({ like: this.state.like + 1 });
+    const like = this.state.like + 1;
+    const dislike = this.state.dislike;
+
+    this.setState({ like: like, dislike: dislike });
+    submitScore(this.props.imageData.id, like, dislike);
   }
 
   render() {

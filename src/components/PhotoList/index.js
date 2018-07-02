@@ -1,42 +1,15 @@
 import React, { Component } from "react";
+import { FormControl } from "react-bootstrap";
 import Photo from "../Photo";
 import Menu from "../Menu";
-import $ from "jquery";
 import "./PhotoList.css";
-
-// var array = [];
-
-// (function($) {
-//   var tok = "207095767.949d13b.d59d973a05da4bb688a6cc02c5649d12",
-//     userid = 207095767,
-//     kolichestvo = 10;
-
-//   $.ajax({
-//     url: "https://api.instagram.com/v1/users/" + userid + "/media/recent",
-//     data: { access_token: tok, count: kolichestvo },
-//     success: function(result) {
-//       console.log(result);
-//       var array = result.data;
-//       for (let x = 0; x < array.length; x++) {
-//         array[x] = array[x].images.low_resolution.url;
-//         alert(array[1]);
-//       }
-//     },
-//     error: function(result) {
-//       console.log(result); // пишем в консоль об ошибках
-//     }
-//   });
-// });
-
-// alert(array[1]);
-
-// const array = ["https://blogsimages.adobe.com/photoshop/files/2012/04/transform.jpg", "https://blogsimages.adobe.com/photoshop/files/2012/04/transform.jpg", "https://blogsimages.adobe.com/photoshop/files/2012/04/transform.jpg"]
+import "../../utils/firebase";
 
 class PhotoList extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { photos: [] };
+    this.state = { photos: [], filteredPhotos: [], filter: "" };
     this.loadPhotos();
   }
 
@@ -56,20 +29,46 @@ class PhotoList extends Component {
           resultat.length = kolvo;
           console.log("resultat=", resultat);
           this.setState({
-            photos: result.data && result.data.length ? result.data : []
+            photos: result.data && result.data.length ? result.data : [],
+            filteredPhotos: result.data && result.data.length ? result.data : []
           });
         }
       });
   }
 
-
   render() {
     return (
       <div>
         <Menu />
+        <div className="input-container">
+          <p className="pl_caption">MAIN PAGE</p>
+          <FormControl
+            className="filter-class"
+            type="text"
+            value={this.state.filter}
+            placeholder="Enter tag"
+            onChange={e => {
+              const newValue = e.target.value;
+              const filteredPhotos =
+                newValue && newValue.length
+                  ? this.state.photos.filter(
+                    photo =>
+                      photo.tags &&
+                      photo.tags.length &&
+                      photo.tags.filter(tag => tag.includes(newValue)).length
+                  )
+                  : this.state.photos;
+
+              this.setState({
+                filter: newValue,
+                filteredPhotos: filteredPhotos
+              });
+            }}
+          />
+        </div>
         <div className="plcont">
-          {this.state.photos && this.state.photos.length ? (
-            this.state.photos.map(item => (
+          {this.state.filteredPhotos && this.state.filteredPhotos.length ? (
+            this.state.filteredPhotos.map(item => (
               <Photo imageData={item} key={item.id} />
             ))
           ) : (

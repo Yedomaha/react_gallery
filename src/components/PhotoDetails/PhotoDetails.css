@@ -4,6 +4,22 @@
     height: 100vh;
 }
 
+.det_wrap{
+  padding-left: 15%;
+}
+
+.in-container{
+  background-color: #3e8794;
+  padding-top: 20px;
+}
+
+.pl_caption{
+  margin-bottom: 0;
+  font-size: 20px;
+  font-weight: bold;
+  color: #2B4273;
+}
+
 .button_d{
     display: block;
     width: 150px;
@@ -24,3 +40,9 @@
     color: #fff;
     background-color: #4D76CC;
   }
+
+  .photo-container{
+    display: inline-block;
+    margin-right: 10px;
+    margin-top: 20px;
+}

@@ -8,16 +8,29 @@ import Description from "./components/Description";
 import Hello from "./components/Hello";
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { showHello: true };
+
+    setTimeout(() => {
+      this.setState({ showHello: false });
+    }, 2000);
+  }
+
   render() {
     return (
       <BrowserRouter>
         <div className="App">
-          <Hello />
-          <Switch>
-            <Route exact path="/" component={PhotoList} />
-            <Route path="/details/:photoId" component={Details} />
-            <Route path="/description/" component={Description} />
-          </Switch>
+          {this.state.showHello ? (
+            <Hello />
+          ) : (
+            <Switch>
+              <Route exact path="/" component={PhotoList} />
+              <Route path="/details/:photoId" component={Details} />
+              <Route path="/description/" component={Description} />
+            </Switch>
+          )}
         </div>
       </BrowserRouter>
     );

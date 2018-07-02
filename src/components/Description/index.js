@@ -8,6 +8,7 @@ class Description extends React.Component {
     render() {
         return (
             <div className="description">
+                <p className="pl_caption">DESCRIPTION PAGE</p>
                 <p className="description_text">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
                     tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
